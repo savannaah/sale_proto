@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package saleproto;
+
+message RequestHeader {
+    string token = 1;
+}
+
+message Product {
+    int32 id = 1;
+    int32 quantity = 2;
+}
+
+message RequestField {
+    int32 customer = 1;
+    string invoiceNumber = 2;
+    string invoiceDate = 3;
+    string name = 4;
+    string description = 5;
+    float discountRate = 6;
+    double paidAmount = 7;
+    string paymentType = 8;
+    repeated Product products = 9;
+}
+
+message RawRequest {
+    RequestHeader header = 1;
+}
+
+message GetRequest {
+    RequestHeader header = 1;
+    int32 id = 2;
+}
+
+message CreateRequest {
+    RequestHeader header = 1;
+    RequestField field = 2;
+}
+
+message UpdateRequest {
+    RequestHeader header = 1;
+    int32 id = 2;
+    RequestField field = 3;
+}
+
+message ActionRequest {
+    RequestHeader header = 1;
+    int32 id = 2;
+    string name = 3;
+}
+
+message DataResponse {
+    int32 statusCode = 1;
+    string message = 2;
+    message Data {
+        string id = 1;
+        string name = 2;
+        string description =3;
+        int32 customerID = 4;
+        string customer = 5;
+        string invoiceNumber = 6;
+        string invoiceDate = 7;
+        string paymentType = 8;
+        repeated int32 products = 9;
+        double totalGrossAmount = 10;
+        double totalTaxAmount = 11;
+        double totalFinalAmount = 12;
+        double grandTotal = 13;
+        float discountRate = 14;
+        double discountAmount = 15;
+        double totalPaidAmount = 16;
+        string createdDate = 17;
+        string createdBy = 18;
+        string lastModifiedBy = 19;
+        string lastModifiedDate = 20;
+        string recordState = 21;
+        int64 referencedBy = 22;
+        string currency = 23;
+    }
+    Data data = 3;
+}
+
+message RawResponse {
+    int32 statusCode = 1;
+    string message = 2;
+    message Data {
+        string currency = 1;
+        string invoiceNumber = 2;
+        repeated string paymentType = 3;
+    }
+    Data data = 3;
+}
+
+service Sale {
+    rpc Raw(RawRequest) returns (RawResponse);
+    rpc Create(CreateRequest) returns (DataResponse);
+    rpc Get(GetRequest) returns (DataResponse);
+    rpc Update(UpdateRequest) returns (DataResponse);
+    rpc Action(ActionRequest) returns (DataResponse);
+}
