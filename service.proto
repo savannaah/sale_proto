@@ -76,6 +76,7 @@ message DataResponse {
         string recordState = 21;
         int64 referencedBy = 22;
         string currency = 23;
+        map<string,string> quantity = 24;
     }
     Data data = 3;
 }
